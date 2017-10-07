@@ -11,6 +11,9 @@
 
 <!DOCTYPE html>
 <html>
+	<head>
+		<title>Assignment</title>
+	</head>
 	<body>
 		<h2>Assignment Login</h2>
 
@@ -20,12 +23,12 @@
 
 		<p>
 			<label for="username">Username:</label>
-			<input type="text" id="username" min="1" max="255" pattern="[a-zA-Z0-9]+">
+			<input type="text" id="username"  pattern="[a-zA-Z0-9]+">
 		</p>
 
 		<p>
 			<label for="password">Password:</label>
-			<input type="password" id="password" min="6" max="255">
+			<input type="password" id="password">
 		</p>
 
 		<p>
@@ -33,12 +36,12 @@
 		</p>
 
 		<form id="formLogin" action="/server/login.php" method="POST">
-			<input type="hidden" name="formUsername" id="formUsername" min="1" max="255" pattern="[a-zA-Z0-9]+">
-			<input type="hidden" name="formPassword" id="formPassword" min="128" max="128" pattern="[a-zA-Z0-9]+">
+			<input type="hidden" name="formUsername" id="formUsername" pattern="[a-zA-Z0-9]+">
+			<input type="hidden" name="formPassword" id="formPassword" pattern="[a-zA-Z0-9]+">
 		</form>
 
 		<script src="vendor/crypto-js-3.1.9-1/crypto-js.js"></script>
-		<script src="vendor/rsa.js"></script>
-		<script src="js/hash.js"></script>
+		<script src="vendor/jsencrypt/jsencrypt.js"></script>
+		<script src="js/client.js"></script>
 	</body>
 </html>

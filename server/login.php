@@ -15,6 +15,12 @@
 	</head>
 	<body>
 		<?php
+			/* Display all errors. */
+			ini_set('display_errors', 1);
+			ini_set('display_startup_errors', 1);
+			error_reporting(E_ALL);
+
+			/* Include dependencies. */
 			include('vendor/rsa.php');
 
 			/* Redirect to login if username and/or password was not sent, or is/are blank. */
@@ -84,24 +90,28 @@
 			echo "<p><strong>POSTed password (decrypted SHA3 hash and timestamp): </strong>" . $decrypted . "</p>";
 			echo "<p><strong>Current timestamp: </strong>" . time() . "</p>";
 			echo "<p><strong>POSTed timestamp: </strong>" . $value[1] . "</p>";
-			
+
+			/* Check that difference in timestamp is less than 150. */
 			if((time() - $value[1]) < 150){
 				echo "<p class=\"pass\">Timestamp difference is less than 150!</p>";
 
-				$exist = 0;
-
+				/* Verify that user exists in database. */
+				$exist = false;
 				foreach(file('../database/database.txt') as $line){
 					$result = explode(",", $line);
 
-					if($result[0] == $username && rtrim($result[1]) == $value[0]){
-						$exist = 1;
+					if(rtrim($result[0]) == $username && rtrim($result[1]) == $value[0]){
+						$exist = true;
 						break;
 					}
 				}
 
-				if($exist == 1){
+				if($exist){
 					echo "<p class=\"pass\">You are logged in!</p>";
+
+					/* Set session. */
 					$_SESSION['username'] = $username;
+
 					header("refresh:2;url=/client/cart.php");
 				}
 				else{

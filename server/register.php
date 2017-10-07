@@ -15,6 +15,12 @@
 	</head>
 	<body>
 		<?php
+			/* Display all errors. */
+			ini_set('display_errors', 1);
+			ini_set('display_startup_errors', 1);
+			error_reporting(E_ALL);
+
+			/* Include dependencies. */
 			include('vendor/rsa.php');
 
 			/* Redirect to register if username and/or password was not sent, or is/are blank. */
@@ -38,8 +44,8 @@
 			$password = $_POST['formPassword'];
 
 			/* Redirect to register if username exceeds maximum limit. */
-			if(strlen($username) > 249){
-				echo "<p class=\"error\">Username exceeds limit of 250 characters.</p>";
+			if(strlen($username) > 255){
+				echo "<p class=\"error\">Username exceeds limit of 255 characters.</p>";
 				header("refresh:2;url=/client/register.php");
 				exit();
 			}
@@ -81,26 +87,24 @@
 			if((time() - $value[1]) < 150){
 				echo "<p class=\"pass\">Timestamp difference is less than 150!</p>";
 
-				$exist = 0;
-
-				foreach(file('/database/database.txt') as $line){
+				/* Verify that user does not already exist in database. */
+				$exist = false;
+				foreach(file('../database/database.txt') as $line){
 					$result = explode(",", $line);
 
-					if($result[0] == $username && rtrim($result[1]) == $value[0]){
-						$exist = 1;
+					if(rtrim($result[0]) == $username){
+						$exist = true;
 						break;
 					}
 				}
 
-				if($exist == 0){
-					$credential = $username . "," . $value[0];
+				if(!$exist){
+					/* Generate credential entry. */
+					$credential = $username . "," . $value[0] . "," . "null";
 
-					echo $credential;
-
+					/* Write entry to database.txt */
 					$file = fopen("../database/database.txt", "a");
-				
 					fwrite($file, $credential . "\n");
-				
 					fclose($file);
 
 					echo "<p class=\"pass\">Account added to the database!</p>";
