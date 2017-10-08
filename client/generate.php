@@ -10,9 +10,14 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
+		<meta charset="utf-8">
 		<title>Assignment</title>
+		<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'">
+		<meta name="author" content="Aaron Horler">
+		<meta name="referrer" content="no-referrer">
+		<meta http-equiv="x-dns-prefetch-control" content="off">
 	</head>
 	<body>
 		<h2>Assignment AES Key Generate</h2>
@@ -23,17 +28,17 @@
 
 		<p>
 			<label for="key">AES key:</label>
-			<input type="password" id="key" min="6" max="255">
+			<input type="password" id="key">
 		</p>
 
 		<p>
 			<label for="keyRepeat">AES key (repeat):</label>
-			<input type="password" id="keyRepeat" min="6" max="255">
+			<input type="password" id="keyRepeat">
 		</p>
 
 		<p>
 			<label for="password">User password:</label>
-			<input type="password" id="password" min="6" max="255">
+			<input type="password" id="password">
 		</p>
 
 		<p>

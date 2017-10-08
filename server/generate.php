@@ -1,7 +1,12 @@
 <!DOCTYPE php>
-<php>
+<html lang="en">
 	<head>
+		<meta charset="utf-8">
 		<title>Assignment</title>
+		<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'sha256-wvbCDnm6Rf7Vby67RzA88EpChS3mvSEO2JkAOhlRwnw='">
+		<meta name="author" content="Aaron Horler">
+		<meta name="referrer" content="no-referrer">
+		<meta http-equiv="x-dns-prefetch-control" content="off">
 		<style>
 			.error {
 				color: red;
@@ -56,7 +61,7 @@
 				exit();
 			}
 
-			/* Split password into SHA3 hash and timestamp. */
+			/* Split string intokey, SHA3 hash, and timestamp. */
 			$value = explode("&", $decrypted);
 
 			/* Redirect to generate if key is less than minimum character limit. */
@@ -124,4 +129,4 @@
 			}
 		?>
 	</body>
-</php>
+</html>

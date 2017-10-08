@@ -9,7 +9,8 @@
 * Please note that, by publishing this work, I am explicitly **NOT** facilitating or allowing plagiarism, and I expressly forbid this work to be used in such a manner. 
 
 # sec-a1
-Secure Electronic Commerce (INTE1071) assignment as part of the Bachelor of Information Technology (BP162) at RMIT University in S2 2017.
+
+Demonstration ecommerce site with client-side SHA3 password hashing, RSA asymmetric encryption, and AES symmetric encryption.
 
 ## Plagiarism notice
 

@@ -1,7 +1,12 @@
 <!DOCTYPE php>
-<php>
+<html lang="en">
 	<head>
+		<meta charset="utf-8">
 		<title>Assignment</title>
+		<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'sha256-wvbCDnm6Rf7Vby67RzA88EpChS3mvSEO2JkAOhlRwnw='">
+		<meta name="author" content="Aaron Horler">
+		<meta name="referrer" content="no-referrer">
+		<meta http-equiv="x-dns-prefetch-control" content="off">
 		<style>
 			.error {
 				color: red;
@@ -119,6 +124,20 @@
 						exit();
 					}
 
+					/* Validate contents of cart. */
+					if($aQuantity < 0 && $aQuantity > 50 && $bQuantity < 0 && $bQuantity > 50 && $cQuantity < 0 && $cQuantity > 50 && $card[0] < 1000000000000000 && $card > 9999999999999999){
+						echo "<p class=\"error\">Cart validation error.</p>";
+						header("refresh:2;url=/client/cart.php");
+						exit();
+					}
+
+					/* Check that at least one product was selected for purchase. */
+					if(($aQuantity + $bQuantity + $cQuantity) < 1){
+						echo "<p class=\"error\">No products selected.</p>";
+						header("refresh:2;url=/client/cart.php");
+						exit();
+					}
+
 					/* Print plaintext variables. */
 					echo "<p><strong>POSTed aQuantity (plaintext): </strong>" . $aQuantity . "</p>";
 					echo "<p><strong>POSTed bQuantity (plaintext): </strong>" . $bQuantity . "</p>";
@@ -154,4 +173,4 @@
 			}
 		?>
 	</body>
-</php>
+</html>

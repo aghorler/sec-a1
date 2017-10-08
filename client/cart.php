@@ -24,9 +24,14 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
+		<meta charset="utf-8">
 		<title>Assignment</title>
+		<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'">
+		<meta name="author" content="Aaron Horler">
+		<meta name="referrer" content="no-referrer">
+		<meta http-equiv="x-dns-prefetch-control" content="off">
 	</head>
 	<body>
 		<h2>Assignment Cart</h2>

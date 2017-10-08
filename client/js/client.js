@@ -1,3 +1,4 @@
+/* Define public RSA key as a constant. */
 const publicKey = "-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzdxaei6bt/xIAhYsdFdW62CGTpRX+GXoZkzqvbf5oOxw4wKENjFX7LsqZXxdFfoRxEwH90zZHLHgsNFzXe3JqiRabIDcNZmKS2F0A7+Mwrx6K2fZ5b7E2fSLFbC7FsvL22mN0KNAp35tdADpl4lKqNFuF7NT22ZBp/X3ncod8cDvMb9tl0hiQ1hJv0H8My/31w+F+Cdat/9Ja5d1ztOOYIx1mZ2FD2m2M33/BgGY/BusUKqSk9W91Eh99+tHS5oTvE8CI8g7pvhQteqmVgBbJOa73eQhZfOQJ0aWQ5m2i0NUPcmwvGDzURXTKW+72UKDz671bE7YAch2H+U7UQeawwIDAQAB-----END PUBLIC KEY-----";
 
 function hashAndEncryptPassword(){
@@ -31,19 +32,20 @@ function hashAndEncryptPassword(){
 				document.getElementById("formLogin").submit();
 			}
 			else{
-				alert("Username must be alphanumeric.")
+				alert("Username must be alphanumeric.");
 			}
 		}
 		else{
-			alert("Password must exceed 5 characters.")
+			alert("Password must exceed 5 characters.");
 		}
 	}
 	else{
-		alert("Username and/or password cannot be blank.")
+		alert("Username and/or password cannot be blank.");
 	}
 }
 
 function encryptAES(){
+	/* Get entered key, and user password. */
 	var key = document.getElementById('key').value;
 	var keyRepeat = document.getElementById('keyRepeat').value;
 	var password = document.getElementById('password').value;
@@ -73,19 +75,20 @@ function encryptAES(){
 				document.getElementById("formGenerate").submit();
 			}
 			else{
-				alert("Key and/or password cannot be less than 6 characters.")
+				alert("Key and/or password cannot be less than 6 characters.");
 			}
 		}
 		else{
-			alert("Key and/or password cannot be blank.")
+			alert("Key and/or password cannot be blank.");
 		}
 	}
 	else{
-		alert("Keys are not equal.")
+		alert("Keys are not equal.");
 	}
 }
 
 function getTotal(){
+	/* Calculate subtotals of each product. */
 	var aSubTotal = document.getElementById("aQuantity").value * 10;
 	var bSubTotal = document.getElementById("bQuantity").value * 15;
 	var cSubTotal = document.getElementById("cQuantity").value * 20;
@@ -99,56 +102,67 @@ function getTotal(){
 }
 
 function encryptCart(){
+	/* Get entered cart data. */
 	var aQuantity = document.getElementById('aQuantity').value;
 	var bQuantity = document.getElementById('bQuantity').value;
 	var cQuantity = document.getElementById('cQuantity').value;
 	var card = document.getElementById('card').value;
 	var key = document.getElementById('key').value;
 
+	/* Check that no element of cart data is an empty string. */
 	if(aQuantity !== "" && bQuantity !== "" && cQuantity !== "" && card  !== "" && key !== ""){
+		/* Check that the key exeeds the minimum character limit. */
 		if(key.length > 5){
+			/* Perform trivial credit card validation. */
 			if(card >= 1000000000000000 && card <= 9999999999999999){
+				/* Validate quantity of products. */
 				if(aQuantity >= 0 && aQuantity <= 50 && bQuantity >= 0 && bQuantity <= 50 && cQuantity >= 0 && cQuantity <= 50){
-					var aesAQuantity = CryptoJS.AES.encrypt(aQuantity, key);
-					var aesBQuantity = CryptoJS.AES.encrypt(bQuantity, key);
-					var aesCQuantity = CryptoJS.AES.encrypt(cQuantity, key);
-					var aesCard = CryptoJS.AES.encrypt(card, key);
+					/* Check that at least one product was selected. */
+					if((aQuantity + bQuantity + cQuantity) > 0){
+						var aesAQuantity = CryptoJS.AES.encrypt(aQuantity, key);
+						var aesBQuantity = CryptoJS.AES.encrypt(bQuantity, key);
+						var aesCQuantity = CryptoJS.AES.encrypt(cQuantity, key);
+						var aesCard = CryptoJS.AES.encrypt(card, key);
 
-					/* Get current time. */
-					var currentTime = Math.floor(new Date().getTime() / 1000);
+						/* Get current time. */
+						var currentTime = Math.floor(new Date().getTime() / 1000);
 
-					/* Encrypt data with RSA public key. */
-					var rsa = new JSEncrypt();
-					rsa.setPublicKey(publicKey);
+						/* Encrypt data with RSA public key. */
+						var rsa = new JSEncrypt();
+						rsa.setPublicKey(publicKey);
 
-					var rsaAQuantity = rsa.encrypt(aesAQuantity.toString() + "&" + currentTime);
-					var rsaBQuantity = rsa.encrypt(aesBQuantity.toString() + "&" + currentTime);
-					var rsaCQuantity = rsa.encrypt(aesCQuantity.toString() + "&" + currentTime);
-					var rsaCard = rsa.encrypt(aesCard.toString() + "&" + currentTime);
+						var rsaAQuantity = rsa.encrypt(aesAQuantity.toString() + "&" + currentTime);
+						var rsaBQuantity = rsa.encrypt(aesBQuantity.toString() + "&" + currentTime);
+						var rsaCQuantity = rsa.encrypt(aesCQuantity.toString() + "&" + currentTime);
+						var rsaCard = rsa.encrypt(aesCard.toString() + "&" + currentTime);
 
-					/* Write RSA encrypted data to hidden form. */
-					document.getElementById('formAQuantity').value = rsaAQuantity;
-					document.getElementById('formBQuantity').value = rsaBQuantity;
-					document.getElementById('formCQuantity').value = rsaCQuantity;
-					document.getElementById('formCard').value = rsaCard;
+						/* Write RSA encrypted data to hidden form. */
+						document.getElementById('formAQuantity').value = rsaAQuantity;
+						document.getElementById('formBQuantity').value = rsaBQuantity;
+						document.getElementById('formCQuantity').value = rsaCQuantity;
+						document.getElementById('formCard').value = rsaCard;
 
-					/* Submit hidden form. */
-					document.getElementById("formCart").submit();
+						/* Submit hidden form. */
+						document.getElementById("formCart").submit();
+					}
+					else{
+						alert("You must purchase at least one product.");
+					}
 				}
 				else{
-					alert("The quantity of any item cannot be less than 0, or greater than 50.")
+					alert("The quantity of any item cannot be less than 0, or greater than 50.");
 				}
 			}
 			else{
-				alert("Invalid credit card number.")
+				alert("Invalid credit card number.");
 			}
 		}
 		else{
-			alert("AES key cannot be less than 6 characters.")
+			alert("AES key cannot be less than 6 characters.");
 		}
 	}
 	else{
-		alert("No field can be blank.")
+		alert("No field can be blank.");
 	}
 }
 
